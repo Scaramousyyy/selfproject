@@ -16,24 +16,22 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-.reveal-text {
+.word {
+    display: inline-block;
     opacity: 0;
-    transform: translateY(15px);
-    animation: revealEffect 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    transform: translateY(5px);
+    filter: blur(2px);
+    animation: wordReveal 0.4s ease-out forwards;
+    margin-right: 0.25em; /* Spasi antar kata */
 }
 
-@keyframes revealEffect {
+@keyframes wordReveal {
     to {
         opacity: 1;
         transform: translateY(0);
+        filter: blur(0);
     }
 }
-
-.delay-1 { animation-delay: 0.1s; }
-.delay-2 { animation-delay: 0.6s; }
-.delay-3 { animation-delay: 1.2s; }
-.delay-4 { animation-delay: 1.8s; }
-.delay-5 { animation-delay: 2.4s; }
 
 .glass-card {
     background: rgba(255, 255, 255, 0.4);
