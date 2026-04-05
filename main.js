@@ -1,6 +1,6 @@
 import { WRAPPED_DATA } from './modules/config.js';
 import { renderSlide } from './modules/ui.js';
-import { initMicSensor, triggerSpam } from './modules/logic.j';
+import { initMicSensor, triggerSpam } from './modules/logic.js';
 
 let currentSlide = 1;
 const totalSlides = 10;
