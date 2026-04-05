@@ -2,40 +2,131 @@ export function renderSlide(num, data) {
     const container = document.getElementById('app');
     let content = "";
 
+    // Helper untuk membungkus konten dalam Glassmorphism Card
+    const glassWrapper = (innerContent) => `
+        <div class="glass-card text-center animate-fade-in mx-6 flex flex-col items-center justify-center min-h-[60vh]">
+            ${innerContent}
+        </div>
+    `;
+
     switch(num) {
         case 1:
+            content = glassWrapper(`
+                <h1 class="text-4xl font-bold mb-6" style="color: #d88a9a;">Hey, ${data.targetName}!!</h1>
+                <p class="text-lg text-gray-700 leading-relaxed">Once again, a year just wrapped.<br>Let's see what things that happened in this past year!!</p>
+                <button onclick="next()" class="btn-primary mt-12 px-10 py-3 rounded-full font-bold shadow-md">Next →</button>
+            `);
+            break;
+
+        case 2:
+            content = glassWrapper(`
+                <p class="text-lg text-gray-600">We've been texting each other for</p>
+                <h2 class="text-5xl font-black my-4" style="color: #d88a9a;">${data.stats.textCount}</h2>
+                <p class="text-sm mb-6 text-gray-500 font-mono italic text-center">times...</p>
+                <p class="mt-4 text-gray-700">and the top #1 keyword in our conversation is:</p>
+                <h3 class="text-3xl font-bold italic mt-2 text-pink-600">"${data.stats.topKeyword}"</h3>
+                <button onclick="next()" class="mt-12 text-xs tracking-widest text-gray-400 uppercase">Continue</button>
+            `);
+            break;
+
+        case 3:
+            content = glassWrapper(`
+                <p class="text-xl text-gray-700 leading-snug text-center">I agreed, dan gak kerasa we've been coming to</p>
+                <h2 class="text-5xl font-black my-4 text-red-500">${data.stats.cafeCount} cafes</h2>
+                <p class="text-lg text-gray-500 italic">just to hangout #ripmoney</p>
+                <button onclick="next()" class="mt-12 text-xs uppercase tracking-widest text-gray-400">Next Stats</button>
+            `);
+            break;
+
+        case 4:
+            content = glassWrapper(`
+                <p class="text-md mb-4 italic text-gray-600 text-center px-4">Sometimes, well.. most of the time, sih...</p>
+                <p class="text-xl text-gray-700 text-center px-4">You gave me a ride and come to <span class="text-blue-500 font-bold uppercase">Antang</span> for</p>
+                <h2 class="text-6xl font-black my-4 text-blue-500">${data.stats.rideToAntang}</h2>
+                <p class="text-xl font-mono text-gray-400 italic">times. crazy,,,</p>
+                <button onclick="next()" class="mt-12 text-xs uppercase tracking-widest text-gray-400">Unbelievable →</button>
+            `);
+            break;
+
+        case 5:
+            content = glassWrapper(`
+                <p class="text-md leading-relaxed text-gray-700 text-center px-4">We also always do karaoke in ur car, Happy Puppy (kalau ada duit), or ur home.</p>
+                <p class="mt-6 text-gray-700">idk how can u still survive after hearing my voice for</p>
+                <h2 class="text-4xl font-bold text-orange-500 my-4">${data.stats.karaokeCount} times.</h2>
+                <p class="text-sm italic text-gray-500">but hey, u're a good singer and friend!!</p>
+                <button onclick="next()" class="mt-10 text-xs uppercase tracking-widest text-gray-400">Keep Singing</button>
+            `);
+            break;
+
+        case 6:
+            content = glassWrapper(`
+                <p class="text-xl text-gray-700">Lastly, we've been making</p>
+                <h2 class="text-5xl font-black my-4 text-pink-500">${data.stats.tiktokDrafts} drafts</h2>
+                <p class="text-xl text-gray-700 text-center px-4">of TikTok's dance video, and there's more soon.... <br><span class="text-gray-400 text-sm">#jujurcapek</span></p>
+                <button onclick="next()" class="mt-12 text-xs uppercase tracking-widest text-gray-400">HBD Soon</button>
+            `);
+            break;
+
+        case 7:
+            content = glassWrapper(`
+                <p class="text-lg text-gray-700">Dan gak kerasa, now you're hitting</p>
+                <h2 class="text-7xl font-black my-4" style="color: #d88a9a;">${data.age}</h2>
+                <p class="text-xl mb-6 italic text-gray-500">So, u are old, ig??</p>
+                <p class="mt-8 text-pink-600 font-medium">but thanks for letting me still exist in ur life for another year &lt;3</p>
+                <button onclick="next()" class="mt-12 text-sm underline underline-offset-8 text-gray-400 uppercase tracking-tighter">View Bill</button>
+            `);
+            break;
+
+        case 8: // Music Receipt
             content = `
-                <div class="text-center animate-fade-in p-6">
-                    <h1 class="text-4xl font-extrabold mb-4">It's one year wrapped</h1>
-                    <p class="text-gray-400 mb-8">Let's see how much u grow in this past year</p>
-                    <button onclick="next()" class="px-8 py-3 bg-green-500 rounded-full font-bold">START →</button>
+                <div class="flex flex-col items-center justify-center p-6 animate-fade-in min-h-screen">
+                    <p class="mb-4 text-sm text-gray-600 italic font-mono text-center">anw, here's the receipt for using my bff service:</p>
+                    <div class="receipt-container text-[10px] shadow-2xl">
+                        <h3 class="text-center font-black text-lg border-b-2 border-dashed border-black pb-2 mb-2">BFF SERVICE BILL</h3>
+                        <div class="space-y-1 font-mono uppercase">
+                            ${data.playlist.map((song, i) => `
+                                <div class="flex justify-between">
+                                    <span>${(i+1).toString().padStart(2, '0')} ${song.substring(0, 15)}...</span>
+                                    <span>$0.00</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="mt-4 border-t-2 border-dashed border-black pt-2 text-center font-bold">
+                            <p>SUBTOTAL: $0.00</p>
+                            <p>DISCOUNT (FRIENDSHIP): -100%</p>
+                            <p class="text-[14px] mt-1">TOTAL: FREE FOREVER</p>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-gray-500 font-mono italic">#jk</p>
+                    <button onclick="next()" class="btn-primary mt-6 px-8 py-2 rounded-full font-bold">NEXT</button>
                 </div>`;
             break;
-        case 2: case 3: case 4: case 5:
-            const q = data.quarters[num-2];
-            content = `<div class="p-8 text-center">
-                <h2 class="text-2xl font-mono text-purple-400 mb-4">${q.title}</h2>
-                <p class="text-xl">${q.desc}</p>
-                <button onclick="next()" class="mt-10 opacity-50">Ketuk untuk lanjut</button>
-            </div>`;
-            break;
-        case 6: // Statistik
-            content = `<div class="p-6 w-full">
-                <h2 class="text-2xl font-bold mb-6 text-center">Your Stats 📊</h2>
-                <div class="grid grid-cols-2 gap-4">
-                    ${data.stats.map(s => `<div class="bg-white/10 p-4 rounded-xl"><p class="text-xs text-gray-400">${s.label}</p><p class="text-lg font-bold">${s.value}</p></div>`).join('')}
+
+        case 9: // Voice Note
+            content = glassWrapper(`
+                <h2 class="text-2xl font-bold mb-4 italic text-pink-600">Lastly, i have a lil message for u.</h2>
+                <p class="text-xs text-gray-500 mb-8 italic">pls use earphone for better experience (whatttt)</p>
+                <div class="bg-white/40 p-4 rounded-2xl border border-white shadow-inner w-full">
+                    <audio controls class="w-full h-10">
+                        <source src="assets/vns/message.mp3" type="audio/mpeg">
+                    </audio>
                 </div>
-                <button onclick="next()" class="w-full mt-8 py-3 border border-white/20 rounded-lg">Next Memory</button>
-            </div>`;
+                <button onclick="next()" class="mt-12 text-pink-500 font-black animate-pulse tracking-widest">LAST STEP →</button>
+            `);
             break;
-        case 10: // Virtual Cake
-            content = `<div class="text-center">
-                <div id="candle" class="text-6xl mb-4 animate-pulse">🎂</div>
-                <h2 class="text-xl font-bold">Tiup lilinnya di mic HP kamu!</h2>
-                <p class="text-sm text-gray-500 mt-2">(Atau klik kuenya jika mic tidak aktif)</p>
-            </div>`;
+
+        case 10: // Blow Candle
+            content = `
+                <div class="text-center animate-fade-in flex flex-col items-center justify-center min-h-screen">
+                    <div class="relative inline-block scale-125">
+                        <div id="flame" class="flame mb-2"></div>
+                        <div class="text-8xl">🎂</div>
+                        <div id="candle" class="absolute inset-0 cursor-pointer opacity-0" title="Klik jika tidak bisa ditiup"></div>
+                    </div>
+                    <h2 class="text-3xl font-black mt-12 text-pink-500 underline decoration-wavy px-4">blow me&lt;3</h2>
+                    <p class="text-[10px] text-gray-500 mt-4 italic font-mono uppercase tracking-widest px-8">(tiup mic hp-mu atau klik kuenya)</p>
+                </div>`;
             break;
-        // Tambahkan case slide lainnya sesuai konsepmu (Carousel, Receipt, VN)
     }
 
     container.innerHTML = content;

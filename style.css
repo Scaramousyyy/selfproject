@@ -1,114 +1,44 @@
-/* 1. Reset & Base Styling */
-* {
+body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    color: #333; /* Mengubah teks jadi agak gelap agar kontras dengan pink cerah */
+    /* Animasi Background Gradient */
+    background: linear-gradient(-45deg, #feaebb, #f8d7da, #ffffff, #ffd1dc);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
 }
 
-body {
-    background-color: #000;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    overflow: hidden; /* Mencegah scroll saat animasi */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Glassmorphism Card untuk Slide */
+.glass-card {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 2rem;
+    box-shadow: 0 8px 32px 0 rgba(254, 174, 187, 0.37);
+}
+
+/* Custom Button agar nyambung dengan tema pink */
+.btn-primary {
+    background-color: #ffffff;
+    color: #feaebb;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:active {
+    transform: scale(0.95);
+    background-color: #feaebb;
     color: white;
-}
-
-/* 2. Container Slide Animation */
-#app {
-    perspective: 1000px;
-}
-
-.animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* 3. Slide 8: Receipt Animation (Spotify Style) */
-.receipt-container {
-    background: #fff;
-    color: #000;
-    padding: 20px;
-    width: 280px;
-    font-family: 'Courier New', Courier, monospace;
-    box-shadow: 0 10px 30px rgba(255,255,255,0.1);
-    position: relative;
-    animation: printReceipt 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
-
-@keyframes printReceipt {
-    0% { transform: translateY(-100%); opacity: 0; }
-    100% { transform: translateY(0); opacity: 1; }
-}
-
-/* 4. Slide 10: Candle Flame Animation */
-.flame {
-    width: 15px;
-    height: 25px;
-    background: #ffaa00;
-    border-radius: 50% 50% 20% 20%;
-    margin: 0 auto;
-    animation: flicker 0.1s infinite alternate;
-}
-
-@keyframes flicker {
-    0% { transform: scale(1); opacity: 0.8; }
-    100% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 15px #ffaa00; }
-}
-
-/* 5. Prank Popups (Classic Windows Style) */
-.popup-window {
-    width: 220px;
-    background: #c0c0c0;
-    border: 2px solid #fff;
-    border-right-color: #808080;
-    border-bottom-color: #808080;
-    box-shadow: 2px 2px 0px #000;
-    pointer-events: auto; /* Agar bisa diklik X-nya */
-}
-
-.popup-header {
-    background: linear-gradient(90deg, #000080, #1084d0);
-    color: white;
-    font-size: 12px;
-    padding: 2px 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: move;
-}
-
-.close-btn {
-    width: 14px;
-    height: 14px;
-    background: #c0c0c0;
-    border: 1px solid #fff;
-    border-right-color: #000;
-    border-bottom-color: #000;
-    color: black;
-    font-size: 9px;
-    text-align: center;
-    line-height: 12px;
-}
-
-/* 6. Carousel (Slide 7) Simple Styling */
-.photo-slide {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 15px;
-    border: 3px solid rgba(255,255,255,0.2);
-}
-
-/* 7. Responsiveness */
-@media (min-width: 768px) {
-    #app {
-        max-width: 400px; /* Membuat tampilan seperti HP di Desktop */
-        margin: 0 auto;
-        border-left: 1px solid #333;
-        border-right: 1px solid #333;
-    }
 }
