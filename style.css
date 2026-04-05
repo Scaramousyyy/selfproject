@@ -6,7 +6,7 @@ body {
     overflow: hidden;
     color: #333; /* Mengubah teks jadi agak gelap agar kontras dengan pink cerah */
     /* Animasi Background Gradient */
-    background: linear-gradient(-45deg, #feaebb, #f8d7da, #ffffff, #ffd1dc);
+    background: linear-gradient(-45deg, #feaebb, #f8d7da, #ff71ba, #ffd1dc);
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
 }
