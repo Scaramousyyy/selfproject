@@ -57,30 +57,43 @@ export function triggerSpam(messages) {
     const container = document.getElementById('prank-container');
     if (!container) return;
 
-    container.classList.remove('pointer-events-none'); 
-    container.style.pointerEvents = 'auto'; // Double check agar bisa diklik
-    
+    container.classList.remove('pointer-events-none');
+    container.style.pointerEvents = 'auto';
+
+    // Jenis warna tombol iklan modern
+    const btnColors = ['bg-green-500', 'bg-blue-600', 'bg-orange-500', 'bg-red-500'];
+
     for (let i = 0; i < 25; i++) {
         setTimeout(() => {
             const msg = messages[Math.floor(Math.random() * messages.length)];
+            const randomBtn = btnColors[Math.floor(Math.random() * btnColors.length)];
             const popup = document.createElement('div');
             
-            // Tambahkan inline style untuk memastikan z-index dan posisi
-            popup.className = 'popup-window fixed p-0 z-50 animate-bounce';
-            popup.style.top = Math.random() * 60 + 10 + '%'; // 10-70% agar tidak terlalu ke pinggir
+            // Styling Pop-up Iklan Modern (Clickbait style)
+            popup.className = 'fixed z-50 bg-white border-2 border-gray-300 shadow-2xl rounded-lg overflow-hidden animate-bounce';
+            popup.style.width = '200px';
+            popup.style.top = Math.random() * 70 + 5 + '%';
             popup.style.left = Math.random() * 60 + 10 + '%';
             
             popup.innerHTML = `
-                <div class="popup-header flex justify-between items-center bg-blue-800 text-white px-2 py-1 text-[10px]">
-                    <span>System Error!</span>
-                    <button class="bg-gray-300 text-black px-1 leading-none border border-white close-popup-btn">X</button>
+                <div class="bg-gray-100 px-2 py-1 flex justify-between items-center border-b border-gray-200">
+                    <span class="text-[8px] font-bold text-gray-400 uppercase tracking-tighter">Sponsored Content</span>
+                    <button class="close-popup-btn text-gray-400 hover:text-black font-bold text-xs">✕</button>
                 </div>
-                <div class="p-4 text-black text-xs font-bold bg-[#c0c0c0] border-b-2 border-r-2 border-white shadow-inner">
-                    ${msg}
+                <div class="p-3 text-center">
+                    <div class="bg-gray-200 w-full h-12 mb-2 flex items-center justify-center rounded uppercase font-black text-[10px] text-gray-400">
+                        Image.png
+                    </div>
+                    <p class="text-[11px] leading-tight font-bold text-black mb-3">
+                        ${msg}
+                    </p>
+                    <button class="${randomBtn} text-white text-[9px] font-black py-1 px-4 rounded-full uppercase tracking-widest shadow-md">
+                        DOWNLOAD NOW
+                    </button>
+                    <p class="text-[7px] text-blue-500 mt-2 underline cursor-pointer">Unsubscribe here</p>
                 </div>
             `;
             
-            // Gunakan event listener daripada inline onclick agar lebih bersih
             popup.querySelector('.close-popup-btn').addEventListener('click', () => {
                 popup.remove();
             });

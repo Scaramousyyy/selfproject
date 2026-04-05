@@ -68,3 +68,25 @@ body {
     background-color: #feaebb;
     color: white;
 }
+
+/* Animasi Iklan Muncul (Pop Effect) */
+@keyframes adPop {
+    0% { transform: scale(0) rotate(-5deg); opacity: 0; }
+    70% { transform: scale(1.1) rotate(3deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.popup-window-modern {
+    animation: adPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Membuat iklan bergetar pelan agar Chika pusing carinya */
+.animate-ad-shake {
+    animation: adShake 3s infinite ease-in-out;
+}
+
+@keyframes adShake {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(2px, -2px); }
+    75% { transform: translate(-2px, 2px); }
+}
