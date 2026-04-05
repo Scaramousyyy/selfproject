@@ -3,16 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your 2025 Wrapped</title>
+    <title>Chika's 2025 Wrapped</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: 'Space Grotesk', sans-serif; }
+    </style>
 </head>
-<body class="bg-black text-white overflow-hidden font-sans">
+<body class="overflow-hidden">
 
-    <main id="app" class="relative h-screen w-full flex items-center justify-center">
+    <main id="app" class="relative h-[100dvh] w-full flex items-center justify-center z-10">
         </main>
 
-    <div id="prank-container" class="pointer-events-none fixed inset-0 z-50"></div>
+    <div id="prank-container" class="pointer-events-none fixed inset-0 z-50 overflow-hidden"></div>
+
+    <audio id="bg-music" loop>
+        <source src="assets/music/background.mp3" type="audio/mpeg">
+    </audio>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script type="module" src="main.js"></script>
