@@ -1,11 +1,12 @@
-import { WRAPPED_DATA } from './config.js';
-
+/**
+ * Inisialisasi deteksi suara (tiupan) untuk lilin
+ * @param {Function} onBlown - Callback saat lilin berhasil ditiup
+ */
 export async function initMicSensor(onBlown) {
     try {
-        // Minta izin mic dengan handling spesifik
+        // 1. Request akses microphone
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         
-        // AudioContext harus di-resume/start setelah interaksi user (ditangani di main.js)
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const analyzer = audioContext.createAnalyser();
         const microphone = audioContext.createMediaStreamSource(stream);
@@ -26,12 +27,12 @@ export async function initMicSensor(onBlown) {
             }
             let average = sum / dataArray.length;
 
-            // Threshold 50 biasanya cukup sensitif untuk tiupan dekat mic
-            if (average > 50) { 
+            // Threshold ditingkatkan sedikit agar tidak terpicu suara sekitar yang pelan
+            if (average > 65) { 
                 isBlown = true;
                 onBlown();
                 
-                // Cleanup: Matikan mic agar icon recording di HP hilang
+                // Cleanup: Matikan stream agar icon mic di browser hilang
                 stream.getTracks().forEach(track => track.stop());
                 audioContext.close();
             } else {
@@ -41,13 +42,14 @@ export async function initMicSensor(onBlown) {
         checkBlow();
 
     } catch (err) {
-        console.warn("Mic blocked or not supported, using click fallback:", err);
-        // Fallback: Pastikan elemen #candle ada sebelum pasang onclick
-        const candleBtn = document.getElementById('candle');
-        if (candleBtn) {
-            candleBtn.onclick = () => {
+        console.warn("Mic blocked/not supported. Fallback to click enabled.");
+        // Fallback: Klik manual pada lilin jika mic ditolak
+        const candleElement = document.getElementById('candle');
+        if (candleElement) {
+            candleElement.style.opacity = "1"; // Pastikan area klik terlihat/aktif
+            candleElement.onclick = () => {
                 onBlown();
-                candleBtn.onclick = null; // Cegah double click
+                candleElement.onclick = null;
             };
         }
     }
@@ -56,49 +58,35 @@ export async function initMicSensor(onBlown) {
 export function triggerSpam(messages) {
     const container = document.getElementById('prank-container');
     if (!container) return;
-
-    container.classList.remove('pointer-events-none');
     container.style.pointerEvents = 'auto';
 
-    // Jenis warna tombol iklan modern
-    const btnColors = ['bg-green-500', 'bg-blue-600', 'bg-orange-500', 'bg-red-500'];
-
-    for (let i = 0; i < 25; i++) {
+    // Munculkan 50 notifikasi secara bertahap
+    const totalSpam = 50; 
+    
+    for (let i = 0; i < totalSpam; i++) {
         setTimeout(() => {
             const msg = messages[Math.floor(Math.random() * messages.length)];
-            const randomBtn = btnColors[Math.floor(Math.random() * btnColors.length)];
             const popup = document.createElement('div');
             
-            // Styling Pop-up Iklan Modern (Clickbait style)
-            popup.className = 'fixed z-50 bg-white border-2 border-gray-300 shadow-2xl rounded-lg overflow-hidden animate-bounce';
-            popup.style.width = '200px';
-            popup.style.top = Math.random() * 70 + 5 + '%';
-            popup.style.left = Math.random() * 60 + 10 + '%';
+            // Posisi acak di seluruh layar HP
+            const top = Math.random() * 85; 
+            const left = Math.random() * 10; 
+            
+            popup.className = 'fixed notification-popup animate-bounce-in';
+            popup.style.top = top + '%';
+            popup.style.left = left + '%';
+            popup.style.zIndex = 100 + i; // Bertumpuk ke atas
             
             popup.innerHTML = `
-                <div class="bg-gray-100 px-2 py-1 flex justify-between items-center border-b border-gray-200">
-                    <span class="text-[8px] font-bold text-gray-400 uppercase tracking-tighter">Sponsored Content</span>
-                    <button class="close-popup-btn text-gray-400 hover:text-black font-bold text-xs">✕</button>
+                <div class="flex justify-between items-center w-full">
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">System Alert</span>
+                    <span class="text-[10px] text-gray-400">now</span>
                 </div>
-                <div class="p-3 text-center">
-                    <div class="bg-gray-200 w-full h-12 mb-2 flex items-center justify-center rounded uppercase font-black text-[10px] text-gray-400">
-                        Image.png
-                    </div>
-                    <p class="text-[11px] leading-tight font-bold text-black mb-3">
-                        ${msg}
-                    </p>
-                    <button class="${randomBtn} text-white text-[9px] font-black py-1 px-4 rounded-full uppercase tracking-widest shadow-md">
-                        DOWNLOAD NOW
-                    </button>
-                    <p class="text-[7px] text-blue-500 mt-2 underline cursor-pointer">Unsubscribe here</p>
-                </div>
+                <p class="text-[13px] font-bold text-gray-900 leading-tight">${msg}</p>
+                <p class="text-[11px] text-gray-500">Tap to view details or ignore.</p>
             `;
             
-            popup.querySelector('.close-popup-btn').addEventListener('click', () => {
-                popup.remove();
-            });
-
             container.appendChild(popup);
-        }, i * 150);
+        }, i * 100); // Muncul setiap 0.1 detik
     }
 }

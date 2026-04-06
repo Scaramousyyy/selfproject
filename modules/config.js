@@ -1,6 +1,10 @@
+/**
+ * Fungsi untuk simulasi harga layanan pertemanan pada struk
+ */
 const generateRandomPrices = (count) => {
     let total = 0;
     const prices = Array.from({ length: count }, () => {
+        // Harga random antara 100rb - 300rb
         const price = Math.floor(Math.random() * (300000 - 100000 + 1)) + 100000;
         total += price;
         return price;
@@ -12,46 +16,57 @@ export const WRAPPED_DATA = {
     targetName: "Chika",
     age: "20",
     stats: {
-        textCount: "101.193+",
+        textCount: "101193",
         topKeyword: "ayo nongs",
-        cafeCount: "30+",
-        rideToAntang: "80+",
-        karaokeCount: "5698++",
-        hours: "8000+"
+        cafeCount: "23",
+        rideToAntang: "80",
+        yearningMinutes: "22896",
+        hours: "6819" // Disinkronkan dengan narasi slide 10
     },
-    locations: [
-        { name: "Kos Eza", color: "#98ffeb", width: "w-[85%]" },
-        { name: "Coffee Shop", color: "#d2ff52", width: "w-[70%]" },
-        { name: "Rumah Tama", color: "#3a12ff", width: "w-[55%]" },
-        { name: "Nipah Mall", color: "#d9b30cff", width: "w-[40%]" },
-        { name: "Unhas Tamlan", color: "#ae23dcff", width: "w-[25%]" }
-    ],
     playlist: [
-        "Meet Up", "Texting", "Nemenin Zoom", "+1 Ngafe", 
-        "Online Advice", "Offline Consult", "Nugas", "Gossip", 
-        "Lunch/Brunch/Dinner", "Emotional Support"
+        "Meet Up", 
+        "Texting", 
+        "Nemenin Zoom", 
+        "+1 Ngafe", 
+        "Online Advice", 
+        "Offline Consult", 
+        "Nugas", 
+        "Gossip", 
+        "Lunch/Brunch/Dinner", 
+        "Emotional Support"
     ],
-    // TEMA BACKGROUND NYENTRIK PER SLIDE
+    
+    // TEMA BACKGROUND PER SLIDE (1-13)
+    // Menggunakan gradasi linear yang kontras tinggi
     themes: {
-        1: "linear-gradient(180deg, #ff007f 0%, #000000 100%)", // Deep Pink -> Hitam
-        2: "linear-gradient(180deg, #00d2ff 0%, #3a47d5 100%)", // Blue Electric
-        3: "linear-gradient(180deg, #6a11cb 0%, #2575fc 100%)", // Ungu -> Biru
-        4: "linear-gradient(180deg, #0f172a 0%, #1e40af 100%)", // Antang Deep Blue
-        5: "linear-gradient(180deg, #ff9a9e 0%, #fad0c4 100%)", // Soft Pink (Karaoke)
-        6: "linear-gradient(180deg, #000000 0%, #ff0000 100%)", // Hitam -> Merah
-        7: "linear-gradient(180deg, #a18cd1 0%, #fbc2eb 100%)", // Pastel Purple (Emosional)
-        8: "linear-gradient(180deg, #333333 0%, #000000 100%)", // Dark Receipt
-        9: "linear-gradient(180deg, #30cfd0 0%, #330867 100%)", // Turquoise -> Deep Purple
-        10: "linear-gradient(180deg, #ffffff 0%, #da9494ff 100%)" // Putih Bersih
+        1: "linear-gradient(180deg, #ff007f 0%, #000000 100%)",   // Welcome
+        2: "linear-gradient(180deg, #00d2ff 0%, #3a47d5 100%)",   // Text Count
+        3: "linear-gradient(180deg, #7034d1 0%, #000000 100%)",   // Keyword
+        4: "linear-gradient(180deg, #1e40af 0%, #0f172a 100%)",   // Makassar Map
+        5: "linear-gradient(180deg, #000000 0%, #1e40af 100%)",   // Teaser
+        6: "linear-gradient(180deg, #111111 0%, #98ffeb 100%)",   // Top 1 Loc
+        7: "linear-gradient(180deg, #000000 0%, #ff007f 100%)",   // Top 5 List
+        8: "#D8AD1F",                                             
+        9: "#D8AD1F",                                             
+        10: "linear-gradient(180deg, #000000 0%, #ff0000 100%)",  // Hours/Birthday
+        11: "linear-gradient(180deg, #333333 0%, #3a3333ff 100%)",  // Receipt
+        12: "linear-gradient(180deg, #30cfd0 0%, #330867 100%)",  // VN Message
+        13: "linear-gradient(180deg, #ffffff 0%, #da9494 100%)"   // Candle/Cake
     },
 
+    // Getter untuk mendapatkan data struk secara dinamis
     get receipt() {
         return generateRandomPrices(this.playlist.length);
     },
+
+    // Pesan prank yang muncul saat hujan iklan di akhir
     prankMessages: [
-        "AKTIFKAN ANTIVIRUS SEKARANG", "SELAMAT ANDA BARU SAJA MENDAPATKAN 0.0001 CM TAMBAHAN TINGGI BADAN", 
-        "ALERT!! VIRUS MEMORI FULL MENYERANG DEVICEMU", "DOWNLOAD BLOCK BLAST SEKARANG!!", 
-        "404 ERROR: ACCESS DENIED DUE TO OLD AGE", "ZEUS HOKI HANYA DI LCVPGACOR55", 
-        "SELAMAT! ANDA MENDAPATKAN DISKON 50% UNTUK PRODUK ANTI-BLOCKING!!"
+        "AKTIFKAN ANTIVIRUS SEKARANG!", 
+        "SELAMAT! TINGGI BADAN ANDA BERTAMBAH 0.0001 CM", 
+        "ALERT!! VIRUS MEMORI PENUH MENYERANG!", 
+        "DOWNLOAD BLOCK BLAST SEKARANG!!", 
+        "404 ERROR: AKSES DITOLAK KARENA FAKTOR U", 
+        "ZEUS HOKI HANYA DI LCVPGACOR55", 
+        "DISKON 50% UNTUK PRODUK ANTI-AGING!!"
     ]
 };

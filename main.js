@@ -3,78 +3,73 @@ import { renderSlide } from './modules/ui.js';
 import { initMicSensor, triggerSpam } from './modules/logic.js';
 
 let currentSlide = 1;
-const totalSlides = 10;
-let autoSlideTimer;
+const totalSlides = 13; 
 
-/**
- * Fungsi Navigasi Slide
- */
-export function goToNextSlide() {
-    clearTimeout(autoSlideTimer); // Hentikan timer jika user klik manual
-    
+// Fungsi navigasi global agar bisa dipanggil dari UI (tombol)
+window.next = () => {
     if (currentSlide < totalSlides) {
         currentSlide++;
         updateView();
     }
-}
+};
 
-/**
- * Update Tampilan & Logic Per Slide
- */
 function updateView() {
+    // 1. Render konten slide ke elemen #app
     renderSlide(currentSlide, WRAPPED_DATA);
-
+    
+    // 2. Simpan state global untuk sinkronisasi animasi di ui.js
     window.currentSlideNum = currentSlide;
-    
-    // Slide 1: Auto-next setelah 1 menit jika tidak diklik
+
+    // --- LOGIKA SPESIFIK PER SLIDE ---
+
+    // Slide 1 (Welcome): Auto-next setelah narasi selesai (approx 10 detik)
     if (currentSlide === 1) {
-        autoSlideTimer = setTimeout(goToNextSlide, 60000);
-        
-        // Memulai musik saat interaksi pertama (opsional)
-        document.addEventListener('click', () => {
-            const music = document.getElementById('bg-music');
-            if(music) music.play().catch(() => {}); 
-        }, { once: true });
+        const welcomeTimer = setTimeout(() => {
+            if (currentSlide === 1) window.next();
+        }, 10000);
+        // Simpan timer agar bisa di-clear jika user klik duluan
+        window.welcomeTimer = welcomeTimer;
     }
-    
-    // Slide 10: Inisialisasi Sensor Tiup Lilin
-    if (currentSlide === 10) {
-        // Beri delay sedikit agar Chika sempat baca teksnya
+
+    // Slide Terakhir (13): Inisialisasi Sensor Tiup Lilin
+    if (currentSlide === 13) {
+        // Beri jeda agar Chika sempat melihat lilin sebelum mulai meniup
         setTimeout(() => {
-            initMicSensor(() => {
-                showBurnWarning();
-            });
-        }, 1500);
+            if (typeof initMicSensor === 'function') {
+                initMicSensor(handleBlowCandle);
+            }
+        }, 2000);
     }
 }
 
-/**
- * Prank Logic setelah Lilin Padam
- */
-function showBurnWarning() {
-    // Sembunyikan lilin yang sudah mati (opsional: manipulasi DOM langsung)
+// Handler saat lilin ditiup
+function handleBlowCandle() {
     const flame = document.getElementById('flame');
-    if (flame) flame.style.display = 'none';
+    if (flame) {
+        flame.style.opacity = '0';
+        flame.style.transition = 'opacity 0.6s ease';
+        setTimeout(() => flame.remove(), 600);
+    }
 
-    // Munculkan notif sistem
+    // Selebrasi Confetti
+    if (window.confetti) {
+        window.confetti({
+            particleCount: 150,
+            spread: 80,
+            origin: { y: 0.6 },
+            colors: ['#ff007f', '#00ff00', '#ffff00', '#00ffff']
+        });
+    }
+
+    // Trigger Prank Iklan (Hanya di akhir setelah tiup lilin)
     setTimeout(() => {
-        if (confirm(`${WRAPPED_DATA.targetName}, lilinnya padam! Sistem mendeteksi file 'Future_Success.exe' perlu di-unzip. Izinkan?`)) {
-            // Aktifkan hujan confetti
-            confetti({ 
-                particleCount: 200, 
-                spread: 100, 
-                origin: { y: 0.3 },
-                colors: ['#feaebb', '#ffffff', '#d88a9a']
-            });
-
-            // Jalankan spam pop-up
+        if (currentSlide === 13) {
             triggerSpam(WRAPPED_DATA.prankMessages);
         }
-    }, 500);
+    }, 2000);
 }
 
-// Ekspos fungsi ke window agar bisa dipanggil lewat onclick di HTML string (ui.js)
-window.next = goToNextSlide;
-
-// Jalankan aplikasi pertama kali
-document.addEventListener('DOMContentLoaded', updateView);
+// Bootstrapping aplikasi
+document.addEventListener('DOMContentLoaded', () => {
+    updateView();
+});

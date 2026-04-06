@@ -1,13 +1,10 @@
 // --- HELPER FUNCTIONS ---
 
-// 1. Fungsi Helper untuk Animasi Angka (Count Up)
-function animateValue(id, start, end, duration) {
+function animateValue(id, start, end, duration = 4000) {
     const obj = document.getElementById(id);
     if (!obj) return;
-
     const target = parseInt(end.toString().replace(/[^0-9]/g, ''));
     let startTimestamp = null;
-
     const step = (timestamp) => {
         if (!startTimestamp) startTimestamp = timestamp;
         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
@@ -18,12 +15,13 @@ function animateValue(id, start, end, duration) {
     window.requestAnimationFrame(step);
 }
 
-// 2. Fungsi Helper Muncul Per Kata (Staggered)
-const wrapWords = (text, startDelay = 0) => {
-    return text.split(" ").map((word, index) => {
-        const delay = startDelay + (index * 0.1);
-        return `<span class="word" style="animation-delay: ${delay}s">${word}</span>`;
+const wrapRow = (text, rowDelay = 0.8, customClass = "") => {
+    const words = text.split(" ");
+    const wordSpans = words.map((word, index) => {
+        const delay = rowDelay + (index * 0.15);
+        return `<span class="word ${customClass}" style="animation-delay: ${delay}s">${word}</span>`;
     }).join("");
+    return `<div class="text-row row-entrance" style="animation-delay: ${rowDelay}s">${wordSpans}</div>`;
 };
 
 // --- MAIN RENDER FUNCTION ---
@@ -33,259 +31,304 @@ export function renderSlide(num, data) {
     const body = document.body;
     let content = "";
 
-    // 1. UPDATE BACKGROUND NEON (DARI CONFIG)
-    if (data.themes && data.themes[num]) {
-        body.style.backgroundImage = data.themes[num];
-        body.style.backgroundRepeat = "no-repeat";
-        body.style.backgroundSize = "cover";
-    }
+    body.className = "overflow-hidden"; 
+    body.style.backgroundImage = data.themes[num] || "";
 
-    // 2. WRAPPER UTAMA (FULLSCREEN & BOLD - TANPA GLASSCARD)
-    const wrappedWrapper = (innerContent) => `
-        <div class="flex flex-col items-center justify-center h-full w-full text-center px-8 animate-fade-in relative z-10 overflow-hidden">
-            ${innerContent}
-        </div>
-    `;
+    const wrapper = (inner) => `<div class="slide-entrance flex flex-col items-center justify-center w-full h-full px-10 text-center relative z-10">${inner}</div>`;
 
     switch(num) {
         case 1:
-            content = wrappedWrapper(`
-                <h1 class="text-6xl font-black text-outline-white mb-8 uppercase tracking-tighter leading-none">
-                    ${wrapWords(`HEY, ${data.targetName}!!`, 0.3)}
-                </h1>
-                <p class="text-2xl text-white font-bold leading-tight mt-4">
-                    ${wrapWords("A year just wrapped. Let's see what happened in your 2025!!", 1)}
-                </p>
-                <button onclick="next()" class="btn-wrapped mt-16 reveal-text" style="animation-delay: 2.5s">LET'S GO</button>
+            content = wrapper(`
+                <h1 class="text-7xl font-bold text-[#ff007f] mb-8 tracking-tighter animate-pulse">HEY CHIKA</h1>
+                ${wrapRow("A year just wrapped. Let's see what happened in the past year!!", 1.3, "font-bold text-2xl")}
+                <button onclick="next()" class="btn-wrapped">START</button>
             `);
             break;
 
-        case 2: // TWO-STEP STORYTELLING (TEXT COUNT)
-            content = wrappedWrapper(`
-                <div id="textCountContainer" class="flex-grow flex flex-col items-center justify-center w-full transition-all duration-700 ease-in-out">
-                    <p class="text-xl text-white font-medium italic mb-2">${wrapWords("We've been texting each other for", 0.2)}</p>
-                    <h2 id="text-anim" class="text-8xl font-black text-[#00ff00] tracking-tighter" style="opacity: 0;">0</h2>
-                    <p class="text-lg text-gray-300 font-mono uppercase tracking-widest mt-2">${wrapWords("times...", 1.2)}</p>
-                </div>
-                <div id="keywordContainer" class="flex-grow flex flex-col items-center justify-center w-full opacity-0 transition-opacity duration-500 ease-in mt-10">
-                    <p class="text-2xl text-white font-black leading-none uppercase tracking-tight">${wrapWords("Your top #1 keyword is:", 0)}</p>
-                    <h3 class="text-6xl font-black italic mt-6 text-[#ffff00] text-outline-white uppercase tracking-tighter leading-none px-2">
-                        ${wrapWords(`"${data.stats.topKeyword}"`, 1.2)}
-                    </h3>
-                    <button onclick="next()" class="btn-wrapped mt-16 reveal-text" style="animation-delay: 2.5s">NEXT</button>
-                </div>
+        case 2:
+            content = wrapper(`
+                ${wrapRow("We've been texting each other for", 0.8, "font-bold text-3xl")}
+                <h2 id="text-anim" class="text-8xl font-black text-[#00ff00] text-nyentrik my-6" style="opacity:0">0</h2>
+                ${wrapRow("times....", 5.5, "font-bold text-3xl")} 
+                <button onclick="next()" class="btn-wrapped">NEXT</button>
             `);
             break;
 
-        case 3: // SPOTIFY LAYOUT (NARRATIVE)
-            content = wrappedWrapper(`
-                <div id="mapIntroContainer" class="transition-all duration-700 ease-in-out">
-                    <p class="text-2xl text-white font-bold leading-tight px-2">
-                        ${wrapWords("You’re out every single day—whether you’re driving yourself, hitching a ride, or hopping on an ojol.", 0.2)}
-                    </p>
-                    <div class="my-10">
-                        <p class="text-lg text-blue-200 font-medium mb-2 uppercase tracking-widest">You've mapped out</p>
-                        <h2 class="text-7xl font-black text-[#00ff00] tracking-tighter leading-none animate-pulse">87.54%</h2>
-                        <p class="text-2xl text-white font-black uppercase mt-2">of Makassar!</p>
-                    </div>
+        case 3:
+            content = wrapper(`
+                ${wrapRow("And your top #1 Keyword is....", 0.8, "font-bold text-2xl")}
+                <div class="mt-8">
+                    ${wrapRow(`"${data.stats.topKeyword}"`, 2.5, "text-5xl font-black text-[#ffff00] italic uppercase tracking-tighter")}
                 </div>
-                <div id="mapTeaserContainer" class="opacity-0 transition-all duration-1000 mt-6 px-4">
-                    <p class="text-xl text-white font-medium italic leading-snug">
-                        ${wrapWords("But there’s that one spot that just keeps calling you back...", 0)}
-                    </p>
-                    <p class="text-3xl text-[#ffff00] font-black uppercase text-outline-white mt-4 tracking-tighter">
-                        ${wrapWords("again, and again, and again.", 1.2)}
-                    </p>
-                    <button onclick="next()" class="btn-wrapped mt-10 reveal-text" style="animation-delay: 2.5s">WHO IS IT?</button>
-                </div>
+                <button onclick="next()" class="btn-wrapped">CONTINUE</button>
             `);
             break;
 
-        case 4: // TOP 1 TO TOP 5
+        case 4:
+            content = wrapper(`
+                ${wrapRow("You’re out every single day—whether you’re driving yourself, hitching a ride, or hopping on an ojol.", 0.8, "font-bold text-2xl")}
+                <div class="mt-10">
+                    ${wrapRow("You've mapped out 87.54% of Makassar!", 5.5, "font-thin-custom")}
+                </div>
+                <button onclick="next()" class="btn-wrapped">CONTINUE</button>
+            `);
+            break;
+
+        case 5:
+            content = wrapper(`
+                ${wrapRow("But there’s that one spot that just keeps calling you back again, again, and again...", 0.8, "font-bold text-2xl")}
+                <button onclick="next()" class="btn-wrapped">WHERE IS IT?</button>
+            `);
+            break;
+
+        case 6:
+            content = wrapper(`
+                ${wrapRow("The favorite spot on your maps is:", 0.8, "font-bold text-2xl text-black")}
+                <h2 class="text-5xl font-black text-black uppercase tracking-tighter mt-8">
+                    ${wrapRow("Kos Eza", 2.2)}
+                </h2>
+                <button onclick="next()" class="btn-wrapped bg-black text-white">CONTINUE</button>
+            `);
+            break;
+
+        case 7:
             const locations = [
-                { name: "Kos Eza", color: "#98ffeb", width: "w-[85%]" },
-                { name: "Coffee Shop", color: "#d2ff52", width: "w-[70%]" },
-                { name: "Rumah Tama", color: "#3a12ff", width: "w-[55%]" },
-                { name: "Unhas Tamlan", color: "#111111", width: "w-[40%]" },
-                { name: "Pantai", color: "#ffffff", width: "w-[25%]" }
+                { name: "Kos Eza", color: "#98ffeb", width: "85%" },
+                { name: "Coffee Shop", color: "#d2ff52", width: "70%" },
+                { name: "Rumah Tama", color: "#3a12ff", width: "55%" },
+                { name: "Unhas Tamlan", color: "#111111", width: "40%" },
+                { name: "Pantai", color: "#ffffff", width: "25%" }
             ];
-
-            content = wrappedWrapper(`
-                <div id="top1Container" class="flex-grow flex flex-col items-center justify-center w-full transition-all duration-1000 ease-in-out">
-                    <p class="text-2xl text-white font-bold uppercase tracking-widest mb-4">
-                        ${wrapWords("The top spot on your maps:", 0.2)}
-                    </p>
-                    <h2 class="text-7xl font-black text-[#98ffeb] text-outline-white italic uppercase tracking-tighter leading-none animate-bounce">
-                        ${wrapWords("Kos Eza", 1.2)}
-                    </h2>
-                </div>
-                <div id="top5Container" class="w-full flex flex-col items-start text-left opacity-0 translate-y-20 transition-all duration-1000 ease-out mt-10">
+            content = wrapper(`
+                <div id="top5Container" class="w-full flex flex-col items-start text-left opacity-0 translate-y-10 transition-all duration-1000 ease-out mt-10">
                     <h2 class="text-2xl font-black text-white uppercase mb-8 self-center text-center">Your Full Top Locations</h2>
                     <div class="flex flex-col gap-5 w-full px-2">
-                        ${locations.map((loc, i) => `
+                        ${locations.map((loc, i) => {
+                            // Hitung delay: Bar ke-i mulai setelah Bar (i-1) dan teksnya selesai
+                            const barDelay = 0.5 + (i * 1.5); 
+                            const textDelay = barDelay + 1.2; // Teks muncul setelah bar selesai tumbuh (1.2s)
+
+                            return `
                             <div class="flex items-center w-full">
-                                <div class="${loc.width} h-10 rounded-r-full shadow-lg mr-4 bg-white" 
-                                     style="background-color: ${loc.color}; transform: translateX(-110%);" 
+                                <div class="h-10 rounded-r-full shadow-lg mr-4" 
+                                     style="background-color: ${loc.color}; width: ${loc.width}; 
+                                            transform: scaleX(0); transform-origin: left; 
+                                            transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) ${barDelay}s;" 
                                      id="bar-${i}">
                                 </div>
-                                <div class="flex flex-col leading-tight">
+                                <div id="text-loc-${i}" class="flex flex-col leading-tight opacity-0 transition-opacity duration-500" 
+                                     style="transition-delay: ${textDelay}s;">
                                     <span class="text-white font-bold text-[10px]">#${i+1}</span>
-                                    <span class="text-white font-black text-sm uppercase tracking-tight whitespace-nowrap">${loc.name}</span>
+                                    <span class="text-white font-black text-sm uppercase tracking-tight">${loc.name}</span>
                                 </div>
-                            </div>
-                        `).join('')}
+                            </div>`;
+                        }).join('')}
                     </div>
-                    <button onclick="next()" class="btn-wrapped mt-10 self-center">CONTINUE</button>
+                    <button id="btn-next-7" onclick="next()" class="btn-wrapped mt-10 self-center opacity-0 transition-opacity duration-700" 
+                            style="transition-delay: ${0.5 + (locations.length * 1.5)}s;">
+                        CONTINUE
+                    </button>
                 </div>
             `);
             break;
 
-        case 5: // YEARNING LISTENER
-            content = wrappedWrapper(`
-                <div class="flex flex-col items-center justify-center w-full min-h-screen relative text-black">
-                    <h2 class="text-4xl font-black leading-tight mb-8 px-4">
-                        ${wrapWords("Has anyone told you lately that you're a top-tier listener?", 0.2)}
-                    </h2>
-                    <div id="yearningContainer" class="mb-10 transition-all duration-700">
-                        <p class="text-xl font-medium mb-4">We catch up constantly, and you’ve officially endured</p>
-                        <h2 id="yearning-anim" class="text-6xl font-black tracking-tighter leading-none my-2">0</h2>
-                        <p class="text-xl font-medium">minutes of my 'yearning' for <span class="font-black italic underline decoration-black underline-offset-4">Kakak</span>.</p>
-                    </div>
-                    <div id="daysContainer" class="opacity-0 transition-all duration-1000 translate-y-10">
-                        <p class="text-2xl font-black uppercase tracking-tighter leading-none">
-                            That is literally <span class="text-pink-600 text-outline-black">15.9 days</span> non-stop.
-                        </p>
-                        <button onclick="next()" class="btn-wrapped mt-12 bg-black text-white border-2 border-white shadow-none" style="box-shadow: 6px 6px 0px #000;">KEEP LISTENING</button>
-                    </div>
+        case 8:
+            content = wrapper(`
+                ${wrapRow("Has anyone told you lately that you're a top-tier listener?", 0.8, "font-bold text-3xl text-black")}
+                <div class="mt-10 text-xl leading-relaxed">
+                    ${wrapRow("We catch up constantly, and you’ve officially endured 22,896 minutes of my 'yearning' about Kakak", 3.8, "font-thin-custom text-black")}
                 </div>
+                <button onclick="next()" class="btn-wrapped bg-black text-white">WAIT, WHAT?</button>
             `);
             break;
 
-        case 6: // TIKTOK
-            content = wrappedWrapper(`
-                <p class="text-2xl text-white font-black uppercase">${wrapWords("Lastly, we've been spending", 0.2)}</p>
-                <h2 id="tiktok-anim" class="text-8xl font-black my-6 text-[#00ff00] tracking-tighter" style="opacity: 0;">0</h2>
-                <p class="text-2xl text-white font-black leading-tight px-4 uppercase">${wrapWords("hours together since ur last birthday.", 1.2)}</p>
-                <button onclick="next()" class="btn-wrapped mt-12">CONTINUE</button>
-            `);
-            break;
+        case 9:
+            const rows = [
+                { delay: 0.5, bgColor: "bg-[#ff8a00]", textColor: "text-black" }, // Oranye
+                { delay: 1.2, bgColor: "bg-[#ff7eb9]", textColor: "text-black" }, // Pink Muda
+                { delay: 1.9, bgColor: "bg-[#7034d1]", textColor: "text-[#ff007f]" }, // Ungu + Teks Pink
+                { delay: 2.6, bgColor: "bg-[#ff5a5a]", textColor: "text-black" }  // Hitam + Teks Oranye
+            ];
 
-        case 7: // AGE
-            content = wrappedWrapper(`
-                <p class="text-2xl text-white font-black uppercase tracking-tighter">${wrapWords("Dan gak kerasa, now you're hitting", 0.2)}</p>
-                <h2 id="age-anim" class="text-9xl font-black my-4 text-outline-white" style="opacity: 0; color: transparent;">0</h2>
-                <p class="mt-12 text-white font-bold px-8 leading-tight">${wrapWords("Anyway, thanks for letting me still exist in ur life <3", 2.5)}</p>
-                <button onclick="next()" class="btn-wrapped mt-16">CONTINUE</button>
-            `);
-            break;
-
-        case 8: // RECEIPT
-            const receiptData = data.receipt;
-            content = wrappedWrapper(`
-                <p class="mb-6 text-sm text-gray-400 italic font-mono reveal-text delay-1">${wrapWords("anw, here's the receipt for using my service:", 0)}</p>
-                <div class="receipt-modern receipt-animation text-[11px] border-4 border-white shadow-2xl">
-                    <h3 class="text-center font-black text-xl mb-1 uppercase">Friend Service</h3>
-                    <div class="receipt-line-neon"></div>
-                    <div class="space-y-2 font-mono uppercase text-white text-left">
-                        ${data.playlist.map((song, i) => `
-                            <div class="flex justify-between items-start gap-2">
-                                <span>${(i+1).toString().padStart(2, '0')} ${song.substring(0, 15)}</span>
-                                <span class="text-[#ffff00]">Rp${receiptData.list[i].toLocaleString('id-ID')}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div class="receipt-line-neon"></div>
-                    <div class="mt-4 font-bold font-mono text-right space-y-1 text-white">
-                        <div class="flex justify-between"><span>SUBTOTAL</span> <span>Rp${receiptData.subtotal.toLocaleString('id-ID')}</span></div>
-                        <div class="flex justify-between text-[#00ff00]"><span>DISCOUNT</span> <span>-100%</span></div>
-                        <div class="receipt-line-neon"></div>
-                        <div class="flex justify-between text-2xl pt-1 font-black text-[#ffff00] text-outline-white">
-                            <span>TOTAL</span> <span>FREE</span>
+            content = wrapper(`
+                <div class="flex flex-col bg-white border-4 border-white mb-10 shadow-2xl w-full max-w-sm h-80 overflow-hidden relative">
+                    ${rows.map((row) => `
+                        <div class="w-full h-1/4 flex justify-start items-center overflow-hidden -ml-1 ${row.bgColor}">
+                            ${wrapRow("22,896", row.delay, `text-[7rem] font-black ${row.textColor} tracking-tighter leading-[0.8] w-full text-left uppercase`)}
                         </div>
-                    </div>
+                    `).join('')}
                 </div>
+                
+                ${wrapRow("Hearing me yap about the same person with this amount of time is crazy.", 3.8, "font-bold text-xl")}
+                ${wrapRow("That is literally 15.9 days non-stop.", 5.2, "font-thin-custom italic")}
+                
                 <button onclick="next()" class="btn-wrapped mt-10">CONTINUE</button>
             `);
             break;
+            
 
-        case 9: // VN
-            content = wrappedWrapper(`
-                <h2 class="text-3xl font-black mb-8 italic text-[#ff00ff] text-outline-white uppercase tracking-tighter">${wrapWords("Lastly, i have a lil message for u.", 0.2)}</h2>
-                <div class="bg-black/80 p-6 border-2 border-white w-full"><audio controls class="w-full h-10 filter invert"><source src="assets/vns/message.mp3" type="audio/mpeg"></audio></div>
-                <button onclick="next()" class="btn-wrapped mt-16">LAST STEP</button>
+        case 10:
+            content = wrapper(`
+                ${wrapRow("And top of that, we've been spending", 0.8, "font-bold text-2xl")}
+                <h2 id="hour-anim" class="text-9xl font-black text-[#00ff00] text-nyentrik my-6" style="opacity:0">0</h2>
+                ${wrapRow("hours together since ur last birthday.", 5.5, "font-bold text-2xl")}
+                ${wrapRow("#jujurbosan #muakbesar", 7.0, "font-thin-custom italic")}
+                <button onclick="next()" class="btn-wrapped">CONTINUE</button>
             `);
             break;
 
-        case 10: // CANDLE
-            content = `
-                <div class="flex flex-col items-center justify-center h-full w-full text-center px-8 animate-fade-in relative z-10">
-                    <div class="relative inline-block scale-150"><div id="flame" class="flame mb-2"></div><div class="text-8xl">🎂</div><div id="candle" class="absolute inset-0 cursor-pointer opacity-0"></div></div>
-                    <h2 class="text-5xl font-black mt-20 uppercase tracking-tighter text-outline-black">${wrapWords("blow me <3", 1)}</h2>
-                </div>`;
+        case 11:
+            const r = data.receipt;
+            content = wrapper(`
+                ${wrapRow("since u keep using my service, i guess... here's the receipt:", 1.5, "font-bold text-2xl")}
+                
+                <div id="receipt-box" class="bg-white text-black p-6 w-full max-w-[320px] shadow-2xl mt-8 mx-auto overflow-hidden opacity-0 border-2 border-gray-200"
+                     style="transform: scaleY(0); transform-origin: top; transition: transform 1.5s cubic-bezier(0.1, 0.5, 0.5, 1), opacity 0.5s ease;">
+                    
+                    <div class="font-mono text-[10px] text-left uppercase tracking-tight">
+                        <h3 class="text-center text-xl font-black mb-4 border-b-2 border-dashed border-black pb-2 italic">SERFICE RECEIPT</h3>
+                        
+                        <div class="space-y-2 mb-4">
+                            ${data.playlist.slice(0, 6).map((p, i) => `
+                                <div class="flex justify-between font-bold">
+                                    <span>${p}</span>
+                                    <span>Rp${r.list[i].toLocaleString('id-ID')}</span>
+                                </div>`).join('')}
+                        </div>
+                        
+                        <div class="border-t-2 border-dashed border-black my-4"></div>
+                        
+                        <div class="flex justify-between font-black text-lg">
+                            <span>TOTAL PAID</span>
+                            <span class="text-[#ff007f]">FREE</span>
+                        </div>
+                        
+                        <div class="mt-6 text-center text-[8px] opacity-60">
+                            <p>*** BestFriend Rental by ARES ***</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    ${wrapRow("congrats for becoming my loyal costumer!", 4.5, "font-bold text-xl")}
+                    ${wrapRow("and thank you for still keeping me around <3", 5.8, "font-thin-custom italic")}
+                </div>
+                
+                <button id="btn-receipt" onclick="next()" class="btn-wrapped mt-10 opacity-0 transition-opacity duration-700" style="transition-delay: 5.5s;">
+                    CONTINUE
+                </button>
+            `);
+            break;
+
+        case 12:
+            content = wrapper(`
+                ${wrapRow("pstt, i still have some message for you:", 0.5, "font-bold text-2xl italic")}
+                ${wrapRow("pls use earphone for better experience", 2.0, "font-thin-custom")}
+                
+                <div id="vn-container" class="opacity-0 translate-y-10 transition-all duration-1000 ease-out mt-8 w-full max-w-[320px] mx-auto">
+                    
+                    <div class="bg-white/20 backdrop-blur-md p-6 rounded-3xl border border-white/30 shadow-2xl relative overflow-hidden">
+                        <div class="absolute bottom-0 left-0 h-1 bg-[#ff007f] transition-all duration-100 ease-linear" id="vn-progress" style="width: 0%;"></div>
+                        
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-[#ff007f] rounded-full flex items-center justify-center animate-pulse">
+                                <span class="text-white">▶</span>
+                            </div>
+                            <div class="flex-1 text-left">
+                                <p class="text-xs font-bold text-white/90">BoysKissingASMR.mp3</p>
+                                <p class="text-[10px] text-white/60 uppercase tracking-tighter">Playing Now...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <audio id="vn-audio">
+                        <source src="assets/vns/message.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+                
+                <button id="btn-final" onclick="next()" class="btn-wrapped mt-10 opacity-0 transition-opacity duration-700" style="transition-delay: 6s;">
+                    FINAL STEP
+                </button>
+            `);
+            break;
+
+        case 13:
+            content = wrapper(`
+                <div class="relative inline-block scale-[2.2] mb-20">
+                    <div id="flame" class="flame mb-2"></div>
+                    <div class="text-8xl">🎂</div>
+                    <div id="candle" class="absolute inset-0 cursor-pointer opacity-0 z-50"></div>
+                </div>
+                ${wrapRow("blow me <3", 1.8, "text-5xl font-black italic")}
+            `);
             break;
     }
 
     container.innerHTML = content;
 
-    // --- TRIGGER LOGIC SINKRONISASI ---
     setTimeout(() => {
-        const animElements = ["text-anim", "cafe-anim", "antang-anim", "karaoke-anim", "tiktok-anim", "age-anim", "yearning-anim"];
-        animElements.forEach(id => {
-            const el = document.getElementById(id);
-            if(el) el.style.opacity = "1";
-        });
-
-        if (num === 2) animateValue("text-anim", 0, data.stats.textCount, 3000);
-        if (num === 3) {/* Slide-up logic handled in case 3 */}
-        if (num === 5) animateValue("yearning-anim", 0, "22896", 3000);
-        if (num === 6) animateValue("tiktok-anim", 0, data.stats.hours, 1500);
-        if (num === 7) animateValue("age-anim", 0, data.age, 1000);
-
-        // Slide 2 Transition
         if (num === 2) {
-            setTimeout(() => {
-                if (window.currentSlideNum !== 2) return;
-                const tc = document.getElementById('textCountContainer');
-                const kw = document.getElementById('keywordContainer');
-                if (tc && kw) { tc.style.transform = "translateY(-15vh)"; tc.classList.add('opacity-70'); kw.classList.remove('opacity-0'); kw.classList.add('opacity-100'); }
-            }, 4800);
+            document.getElementById('text-anim').style.opacity = "1";
+            animateValue('text-anim', 0, data.stats.textCount, 4000);
         }
-
-        // Slide 3 Transition
-        if (num === 3) {
-            setTimeout(() => {
-                if (window.currentSlideNum !== 3) return;
-                const intro = document.getElementById('mapIntroContainer');
-                const teaser = document.getElementById('mapTeaserContainer');
-                if (intro && teaser) { intro.style.transform = "translateY(-10vh)"; intro.classList.add('opacity-60'); teaser.classList.remove('opacity-0'); teaser.classList.add('opacity-100'); teaser.style.transform = "translateY(-5vh)"; }
-            }, 6000);
+        if (num === 10) {
+            document.getElementById('hour-anim').style.opacity = "1";
+            animateValue('hour-anim', 0, data.stats.hours, 4000);
         }
-
-        // Slide 4 Transition
-        if (num === 4) {
-            setTimeout(() => {
-                if (window.currentSlideNum !== 4) return;
-                const t1 = document.getElementById('top1Container');
-                const t5 = document.getElementById('top5Container');
-                if (t1 && t5) {
-                    t1.style.transform = "translateY(-20vh) scale(0.8)"; t1.classList.add('opacity-50');
-                    t5.classList.remove('opacity-0', 'translate-y-20'); t5.classList.add('opacity-100', 'translate-y-0');
-                    for(let i=0; i<5; i++) {
-                        const bar = document.getElementById(`bar-${i}`);
-                        if(bar) { setTimeout(() => { bar.style.transition = "transform 1s ease-out"; bar.style.transform = "translateX(110%)"; }, 500 + (i * 200)); }
-                    }
+        if (num === 7) {
+            const container7 = document.getElementById('top5Container');
+            if (container7) {
+                // 1. Munculkan container utama
+                container7.classList.remove('opacity-0', 'translate-y-10');
+                container7.classList.add('opacity-100', 'translate-y-0');
+                
+                // 2. Trigger semua Bar (delay ditangani oleh CSS transition-delay di atas)
+                for (let i = 0; i < 5; i++) {
+                    const bar = document.getElementById(`bar-${i}`);
+                    const text = document.getElementById(`text-loc-${i}`);
+                    if (bar) bar.style.transform = "scaleX(1)";
+                    if (text) text.style.opacity = "1";
                 }
-            }, 3500);
+            }
         }
-
-        // Slide 5 Transition
-        if (num === 5) {
+        if (num === 11) {
+            const receipt = document.getElementById('receipt-box');
+            const btn = document.getElementById('btn-receipt');
             setTimeout(() => {
-                if (window.currentSlideNum !== 5) return;
-                const yc = document.getElementById('yearningContainer');
-                const dc = document.getElementById('daysContainer');
-                if (yc && dc) { yc.style.transform = "translateY(-5vh)"; dc.classList.remove('opacity-0', 'translate-y-10'); dc.classList.add('opacity-100', 'translate-y-0'); }
-            }, 4500);
+                if (receipt) {
+                    receipt.style.opacity = "1";
+                    receipt.style.transform = "scaleY(1)"; // Efek struk keluar/tumbuh ke bawah
+                }
+                if (btn) btn.style.opacity = "1";
+            }, 2000); // Muncul setelah narasi pembuka selesai
         }
-    }, 1500);
+        if (num === 12) {
+            const vnContainer = document.getElementById('vn-container');
+            const audio = document.getElementById('vn-audio');
+            const progress = document.getElementById('vn-progress');
+            const btnFinal = document.getElementById('btn-final');
+
+            setTimeout(() => {
+                if (vnContainer) {
+                    // 1. Munculkan kotak VN
+                    vnContainer.classList.remove('opacity-0', 'translate-y-10');
+                    vnContainer.classList.add('opacity-100', 'translate-y-0');
+                    
+                    // 2. Mainkan Audio (Pastikan browser mengizinkan auto-play)
+                    audio.play().catch(err => console.log("Auto-play blocked, user interaction needed"));
+
+                    // 3. Jalankan Progress Bar
+                    audio.ontimeupdate = () => {
+                        const percentage = (audio.currentTime / audio.duration) * 100;
+                        if (progress) progress.style.width = percentage + "%";
+                    };
+
+                    // 4. Munculkan tombol final setelah audio selesai atau delay tertentu
+                    audio.onended = () => {
+                        if (btnFinal) btnFinal.style.opacity = "1";
+                    };
+                }
+            }, 2500); // Delay agar muncul setelah narasi pertama selesai
+        }
+    }, 1800);
 }
