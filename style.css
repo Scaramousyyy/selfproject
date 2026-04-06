@@ -8,6 +8,8 @@ body {
     background: linear-gradient(-45deg, #feaebb, #f8d7da, #ff71ba, #ffd1dc);
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
+    transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    background-repeat: repeat;
 }
 
 @keyframes gradientBG {

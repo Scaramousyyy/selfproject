@@ -26,7 +26,19 @@ const wrapWords = (text, startDelay = 0) => {
 
 export function renderSlide(num, data) {
     const container = document.getElementById('app');
+    const body = document.body;
     let content = "";
+
+    if (data.themes[num]) {
+        body.style.backgroundImage = data.themes[num];
+        
+        if (num === 1) body.style.backgroundSize = "40px 40px, 40px 40px";
+        else if (num === 2 || num === 3 || num === 5 || num === 7) body.style.backgroundSize = "60px 60px";
+        else if (num === 4 || num === 8) body.style.backgroundSize = "20px 20px";
+        else body.style.backgroundSize = "400% 400%";
+
+        if (num === 1) body.style.backgroundPosition = "0 0, 20px 20px";
+    }
 
     const glassWrapper = (innerContent) => `
         <div class="glass-card text-center mx-6 flex flex-col items-center justify-center min-h-[60vh] shadow-2xl">
