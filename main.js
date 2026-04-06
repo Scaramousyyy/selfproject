@@ -23,6 +23,8 @@ export function goToNextSlide() {
  */
 function updateView() {
     renderSlide(currentSlide, WRAPPED_DATA);
+
+    window.currentSlideNum = currentSlide;
     
     // Slide 1: Auto-next setelah 1 menit jika tidak diklik
     if (currentSlide === 1) {
