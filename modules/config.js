@@ -39,18 +39,18 @@ export const WRAPPED_DATA = {
     // TEMA BACKGROUND PER SLIDE (1-13)
     // Menggunakan gradasi linear yang kontras tinggi
     themes: {
-        1: "linear-gradient(180deg, #ff007f 0%, #000000 100%)",   // Welcome
+        1: "linear-gradient(180deg, #ffffff 0%, #da9494 100%)",   // Candle/Cake
         2: "linear-gradient(180deg, #00d2ff 0%, #3a47d5 100%)",   // Text Count
         3: "linear-gradient(180deg, #7034d1 0%, #000000 100%)",   // Keyword
         4: "linear-gradient(180deg, #1e40af 0%, #0f172a 100%)",   // Makassar Map
-        5: "linear-gradient(180deg, #000000 0%, #1e40af 100%)",   // Teaser
-        6: "linear-gradient(180deg, #111111 0%, #98ffeb 100%)",   // Top 1 Loc
-        7: "linear-gradient(180deg, #000000 0%, #ff007f 100%)",   // Top 5 List
+        5: "#b4004eff",   // Teaser
+        6: "#b4004eff",   // Top 1 Loc
+        7: "linear-gradient(180deg, #d0ff00ff 0%, #000000 100%)",   // Top 5 List
         8: "#D8AD1F",                                             
         9: "#D8AD1F",                                             
         10: "linear-gradient(180deg, #000000 0%, #ff0000 100%)",  // Hours/Birthday
         11: "linear-gradient(180deg, #333333 0%, #3a3333ff 100%)",  // Receipt
-        12: "linear-gradient(180deg, #30cfd0 0%, #330867 100%)",  // VN Message
+        12: "#330867",  // VN Message
         13: "linear-gradient(180deg, #ffffff 0%, #da9494 100%)"   // Candle/Cake
     },
 

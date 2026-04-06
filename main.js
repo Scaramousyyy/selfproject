@@ -3,10 +3,21 @@ import { renderSlide } from './modules/ui.js';
 import { initMicSensor, triggerSpam } from './modules/logic.js';
 
 let currentSlide = 1;
+let autoNextTimer = null; // Penampung timer otomatis
 const totalSlides = 13; 
 
 // Fungsi navigasi global agar bisa dipanggil dari UI (tombol)
 window.next = () => {
+    // CRITICAL: Bersihkan timer otomatis jika ada, agar tidak bentrok saat user klik manual
+    if (autoNextTimer) {
+        clearTimeout(autoNextTimer);
+        autoNextTimer = null;
+    }
+    // Bersihkan juga timer welcome jika user klik "Start" duluan
+    if (window.welcomeTimer) {
+        clearTimeout(window.welcomeTimer);
+    }
+
     if (currentSlide < totalSlides) {
         currentSlide++;
         updateView();
@@ -20,20 +31,36 @@ function updateView() {
     // 2. Simpan state global untuk sinkronisasi animasi di ui.js
     window.currentSlideNum = currentSlide;
 
-    // --- LOGIKA SPESIFIK PER SLIDE ---
+    // --- LOGIKA AUTO-NEXT (Slide 2 sampai 10) ---
+    if (currentSlide >= 2 && currentSlide <= 10) {
+        let duration = 8000; // Standar 7.5 detik agar narasi terbaca
+
+        // Penyesuaian durasi berdasarkan konten slide
+        if (currentSlide === 3) {
+            duration = 10000; // Lebih lama untuk menikmati keyword yang muncul
+        } else if (currentSlide === 7) {
+            duration = 12000; // Paling lama karena bar chart tumbuh satu per satu
+        } else if (currentSlide === 9) {
+            duration = 12000; // Cukup lama untuk melihat grid angka 22.896
+        } else if (currentSlide === 10) {
+            duration = 12000; // Lebih lama untuk narasi jam dan birthday
+        }
+        autoNextTimer = setTimeout(() => {
+            window.next();
+        }, duration);
+    }
+
+    // --- LOGIKA SPESIFIK PER SLIDE LAINNYA ---
 
     // Slide 1 (Welcome): Auto-next setelah narasi selesai (approx 10 detik)
     if (currentSlide === 1) {
-        const welcomeTimer = setTimeout(() => {
+        window.welcomeTimer = setTimeout(() => {
             if (currentSlide === 1) window.next();
         }, 10000);
-        // Simpan timer agar bisa di-clear jika user klik duluan
-        window.welcomeTimer = welcomeTimer;
     }
 
     // Slide Terakhir (13): Inisialisasi Sensor Tiup Lilin
     if (currentSlide === 13) {
-        // Beri jeda agar Chika sempat melihat lilin sebelum mulai meniup
         setTimeout(() => {
             if (typeof initMicSensor === 'function') {
                 initMicSensor(handleBlowCandle);
