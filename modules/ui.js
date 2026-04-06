@@ -95,7 +95,7 @@ export function renderSlide(num, data) {
 
         case 3:
             content = wrapper(`
-                ${wrapRow("And your top #1 Keyword is....", 0.8, `font-bold text-2xl ${baseTextColor}`)}
+                ${wrapRow("And your top #1 Keyword is....", 0.8, `font-bold text-xl ${baseTextColor}`)}
                 <div class="mt-8">
                     ${wrapRow(`"${data.stats.topKeyword}"`, 2.5, "text-5xl font-black text-[#ffff00] italic uppercase tracking-tighter")}
                 </div>
