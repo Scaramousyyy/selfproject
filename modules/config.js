@@ -26,17 +26,18 @@ export const WRAPPED_DATA = {
     ],
     // TEMA BACKGROUND NYENTRIK PER SLIDE
     themes: {
-        1: "radial-gradient(#ffffff 10%, transparent 10%), radial-gradient(#ffffff 10%, transparent 10%)", // Polkadot
-        2: "linear-gradient(45deg, #feaebb 25%, #ff71ba 25%, #ff71ba 50%, #feaebb 50%, #feaebb 75%, #ff71ba 75%, #ff71ba 100%)", // Stripes
-        3: "repeating-linear-gradient(0deg, transparent, transparent 20px, #ffffff 20px, #ffffff 40px)", // Horizontal
-        4: "linear-gradient(90deg, #60a5fa 1px, transparent 1px), linear-gradient(0deg, #60a5fa 1px, transparent 1px)", // Blue Grid (Antang)
-        5: "conic-gradient(from 0deg at 50% 50%, #feaebb 0deg 90deg, #ff71ba 90deg 180deg, #feaebb 180deg 270deg, #ff71ba 270deg 360deg)", // Checkboard
-        6: "radial-gradient(circle at center, #feaebb 0%, #ff71ba 100%)", // Aura
-        7: "linear-gradient(135deg, #ffffff 25%, transparent 25%), linear-gradient(225deg, #ffffff 25%, transparent 25%)", // Zigzag
-        8: "linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px)", // Paper Grid
-        9: "linear-gradient(to bottom right, #feaebb, #a78bfa)", // Gradient VN
-        10: "white" // Fokus Lilin
+        1: "linear-gradient(180deg, #ff007f 0%, #000000 100%)", // Deep Pink -> Hitam
+        2: "linear-gradient(180deg, #00d2ff 0%, #3a47d5 100%)", // Blue Electric
+        3: "linear-gradient(180deg, #6a11cb 0%, #2575fc 100%)", // Ungu -> Biru
+        4: "linear-gradient(180deg, #0f172a 0%, #1e40af 100%)", // Antang Deep Blue
+        5: "linear-gradient(180deg, #ff9a9e 0%, #fad0c4 100%)", // Soft Pink (Karaoke)
+        6: "linear-gradient(180deg, #000000 0%, #ff0000 100%)", // Hitam -> Merah
+        7: "linear-gradient(180deg, #a18cd1 0%, #fbc2eb 100%)", // Pastel Purple (Emosional)
+        8: "linear-gradient(180deg, #333333 0%, #000000 100%)", // Dark Receipt
+        9: "linear-gradient(180deg, #30cfd0 0%, #330867 100%)", // Turquoise -> Deep Purple
+        10: "linear-gradient(180deg, #ffffff 0%, #da9494ff 100%)" // Putih Bersih
     },
+
     get receipt() {
         return generateRandomPrices(this.playlist.length);
     },
