@@ -95,10 +95,10 @@ export function renderSlide(num, data) {
 
         case 5:
             content = wrappedWrapper(`
-                <p class="text-xl text-white font-bold leading-tight px-4">${wrapWords("And we always sing together in ur car, Happy Puppy, or ur home.", 0.2)}</p>
+                <p class="text-xl text-white font-bold leading-tight px-4">${wrapWords("And we always sing together in ur car, HapPup, or ur home.", 0.2)}</p>
                 <p class="mt-8 text-white font-medium">${wrapWords("How can u survive hearing my cracked voice for", 1.5)}</p>
                 <h2 id="karaoke-anim" class="text-6xl font-black text-[#ffaa00] my-4" style="opacity: 0;">0</h2>
-                <p class="text-xl text-white font-black text-outline-white uppercase">${wrapWords("times. You're a hero, Chika!!", 2.8)}</p>
+                <p class="text-xl text-white font-black text-outline-white uppercase">${wrapWords("hours. You're a good singer and friend, Chika!!", 2.8)}</p>
                 <button onclick="next()" class="btn-wrapped mt-12 reveal-text" style="animation-delay: 4s">CONTINUE</button>
             `);
             break;
@@ -108,7 +108,7 @@ export function renderSlide(num, data) {
                 <p class="text-2xl text-white font-black uppercase">${wrapWords("Lastly, we've been spending", 0.2)}</p>
                 <h2 id="tiktok-anim" class="text-8xl font-black my-6 text-[#00ff00] tracking-tighter" style="opacity: 0;">0</h2>
                 <p class="text-2xl text-white font-black leading-tight px-4 uppercase">${wrapWords("hours together since ur last birthday.", 1.2)}</p>
-                <p class="text-gray-400 text-sm mt-6 font-mono">${wrapWords("#jujurbosan #muakdikit", 2.5)}</p>
+                <p class="text-gray-400 text-sm mt-6 font-mono">${wrapWords("#jujurbosan #muakbegete", 2.5)}</p>
                 <button onclick="next()" class="btn-wrapped mt-12 reveal-text" style="animation-delay: 3.5s">CONTINUE</button>
             `);
             break;
@@ -117,7 +117,7 @@ export function renderSlide(num, data) {
             content = wrappedWrapper(`
                 <p class="text-2xl text-white font-black uppercase tracking-tighter">${wrapWords("Dan gak kerasa, now you're hitting", 0.2)}</p>
                 <h2 id="age-anim" class="text-9xl font-black my-4 text-outline-white" style="opacity: 0; color: transparent;">0</h2>
-                <p class="text-2xl text-white font-medium italic mt-4">${wrapWords("So, you are old, ig??", 1.5)}</p>
+                <p class="text-2xl text-white font-medium italic mt-4">${wrapWords("So, you are OLD, ig??", 1.5)}</p>
                 <p class="mt-12 text-white font-bold px-8 leading-tight">${wrapWords("Anyway, thanks for letting me still exist in ur life <3", 2.5)}</p>
                 <button onclick="next()" class="btn-wrapped mt-16 reveal-text" style="animation-delay: 4s">CONTINUE</button>
             `);
@@ -151,7 +151,7 @@ export function renderSlide(num, data) {
                         </div>
                     </div>
                 </div>
-                <button onclick="next()" class="btn-wrapped mt-10 reveal-text" style="animation-delay: 1.5s">CONTINUE</button>
+                <button onclick="next()" class="btn-wrapped mt-10 reveal-text" style="animation-delay: 1.5s">PAY NOW</button>
             `);
             break;
 
