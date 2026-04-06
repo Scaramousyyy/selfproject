@@ -19,6 +19,13 @@ export const WRAPPED_DATA = {
         karaokeCount: "5698++",
         hours: "8000+"
     },
+    locations: [
+        { name: "Kos Eza", color: "#98ffeb", width: "w-[85%]" },
+        { name: "Coffee Shop", color: "#d2ff52", width: "w-[70%]" },
+        { name: "Rumah Tama", color: "#3a12ff", width: "w-[55%]" },
+        { name: "Nipah Mall", color: "#d9b30cff", width: "w-[40%]" },
+        { name: "Unhas Tamlan", color: "#ae23dcff", width: "w-[25%]" }
+    ],
     playlist: [
         "Meet Up", "Texting", "Nemenin Zoom", "+1 Ngafe", 
         "Online Advice", "Offline Consult", "Nugas", "Gossip", 
