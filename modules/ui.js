@@ -1,10 +1,13 @@
 // --- HELPER FUNCTIONS ---
 
+// 1. Fungsi Helper untuk Animasi Angka (Count Up)
 function animateValue(id, start, end, duration) {
     const obj = document.getElementById(id);
     if (!obj) return;
+
     const target = parseInt(end.toString().replace(/[^0-9]/g, ''));
     let startTimestamp = null;
+
     const step = (timestamp) => {
         if (!startTimestamp) startTimestamp = timestamp;
         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
@@ -15,6 +18,7 @@ function animateValue(id, start, end, duration) {
     window.requestAnimationFrame(step);
 }
 
+// 2. Fungsi Helper Muncul Per Kata (Staggered)
 const wrapWords = (text, startDelay = 0) => {
     return text.split(" ").map((word, index) => {
         const delay = startDelay + (index * 0.1);
@@ -29,12 +33,14 @@ export function renderSlide(num, data) {
     const body = document.body;
     let content = "";
 
+    // 1. UPDATE BACKGROUND NEON (DARI CONFIG)
     if (data.themes && data.themes[num]) {
         body.style.backgroundImage = data.themes[num];
         body.style.backgroundRepeat = "no-repeat";
         body.style.backgroundSize = "cover";
     }
 
+    // 2. WRAPPER UTAMA (FULLSCREEN & BOLD - TANPA GLASSCARD)
     const wrappedWrapper = (innerContent) => `
         <div class="flex flex-col items-center justify-center h-full w-full text-center px-8 animate-fade-in relative z-10 overflow-hidden">
             ${innerContent}
@@ -54,7 +60,7 @@ export function renderSlide(num, data) {
             `);
             break;
 
-        case 2: // TWO-STEP: TEXT COUNT -> KEYWORD
+        case 2: // TWO-STEP STORYTELLING (TEXT COUNT)
             content = wrappedWrapper(`
                 <div id="textCountContainer" class="flex-grow flex flex-col items-center justify-center w-full transition-all duration-700 ease-in-out">
                     <p class="text-xl text-white font-medium italic mb-2">${wrapWords("We've been texting each other for", 0.2)}</p>
@@ -71,7 +77,7 @@ export function renderSlide(num, data) {
             `);
             break;
 
-        case 3: // MAPS NARRATIVE
+        case 3: // SPOTIFY LAYOUT (NARRATIVE)
             content = wrappedWrapper(`
                 <div id="mapIntroContainer" class="transition-all duration-700 ease-in-out">
                     <p class="text-2xl text-white font-bold leading-tight px-2">
@@ -95,7 +101,15 @@ export function renderSlide(num, data) {
             `);
             break;
 
-        case 4: // --- REMODELED: TOP 1 THEN TOP 5 ---
+        case 4: // TOP 1 TO TOP 5
+            const locations = [
+                { name: "Kos Eza", color: "#98ffeb", width: "w-[85%]" },
+                { name: "Coffee Shop", color: "#d2ff52", width: "w-[70%]" },
+                { name: "Rumah Tama", color: "#3a12ff", width: "w-[55%]" },
+                { name: "Unhas Tamlan", color: "#111111", width: "w-[40%]" },
+                { name: "Pantai", color: "#ffffff", width: "w-[25%]" }
+            ];
+
             content = wrappedWrapper(`
                 <div id="top1Container" class="flex-grow flex flex-col items-center justify-center w-full transition-all duration-1000 ease-in-out">
                     <p class="text-2xl text-white font-bold uppercase tracking-widest mb-4">
@@ -105,7 +119,6 @@ export function renderSlide(num, data) {
                         ${wrapWords("Kos Eza", 1.2)}
                     </h2>
                 </div>
-
                 <div id="top5Container" class="w-full flex flex-col items-start text-left opacity-0 translate-y-20 transition-all duration-1000 ease-out mt-10">
                     <h2 class="text-2xl font-black text-white uppercase mb-8 self-center text-center">Your Full Top Locations</h2>
                     <div class="flex flex-col gap-5 w-full px-2">
@@ -127,23 +140,17 @@ export function renderSlide(num, data) {
             `);
             break;
 
-        case 5: // --- REMODELED: YEARNING LISTENER (SPOTIFY PODCAST STYLE) ---
+        case 5: // YEARNING LISTENER
             content = wrappedWrapper(`
                 <div class="flex flex-col items-center justify-center w-full min-h-screen relative text-black">
                     <h2 class="text-4xl font-black leading-tight mb-8 px-4">
                         ${wrapWords("Has anyone told you lately that you're a top-tier listener?", 0.2)}
                     </h2>
-
                     <div id="yearningContainer" class="mb-10 transition-all duration-700">
-                        <p class="text-xl font-medium mb-4">
-                            We catch up constantly, and you’ve officially endured
-                        </p>
+                        <p class="text-xl font-medium mb-4">We catch up constantly, and you’ve officially endured</p>
                         <h2 id="yearning-anim" class="text-6xl font-black tracking-tighter leading-none my-2">0</h2>
-                        <p class="text-xl font-medium">
-                            minutes of my 'yearning' for <span class="font-black italic underline decoration-black underline-offset-4">Kakak</span>.
-                        </p>
+                        <p class="text-xl font-medium">minutes of my 'yearning' for <span class="font-black italic underline decoration-black underline-offset-4">Kakak</span>.</p>
                     </div>
-
                     <div id="daysContainer" class="opacity-0 transition-all duration-1000 translate-y-10">
                         <p class="text-2xl font-black uppercase tracking-tighter leading-none">
                             That is literally <span class="text-pink-600 text-outline-black">15.9 days</span> non-stop.
@@ -154,37 +161,35 @@ export function renderSlide(num, data) {
             `);
             break;
 
-        case 6:
+        case 6: // TIKTOK
             content = wrappedWrapper(`
                 <p class="text-2xl text-white font-black uppercase">${wrapWords("Lastly, we've been spending", 0.2)}</p>
                 <h2 id="tiktok-anim" class="text-8xl font-black my-6 text-[#00ff00] tracking-tighter" style="opacity: 0;">0</h2>
                 <p class="text-2xl text-white font-black leading-tight px-4 uppercase">${wrapWords("hours together since ur last birthday.", 1.2)}</p>
-                <p class="text-gray-400 text-sm mt-6 font-mono">${wrapWords("#jujurbosan #muakdikit", 2.5)}</p>
-                <button onclick="next()" class="btn-wrapped mt-12 reveal-text" style="animation-delay: 3.5s">CONTINUE</button>
+                <button onclick="next()" class="btn-wrapped mt-12">CONTINUE</button>
             `);
             break;
 
-        case 7:
+        case 7: // AGE
             content = wrappedWrapper(`
-                <p class="text-2xl text-white font-black uppercase tracking-tighter">${wrapWords("And now you're hitting", 0.2)}</p>
+                <p class="text-2xl text-white font-black uppercase tracking-tighter">${wrapWords("Dan gak kerasa, now you're hitting", 0.2)}</p>
                 <h2 id="age-anim" class="text-9xl font-black my-4 text-outline-white" style="opacity: 0; color: transparent;">0</h2>
-                <p class="text-2xl text-white font-medium italic mt-4">${wrapWords("So, you are OLD, ig??", 1.5)}</p>
                 <p class="mt-12 text-white font-bold px-8 leading-tight">${wrapWords("Anyway, thanks for letting me still exist in ur life <3", 2.5)}</p>
-                <button onclick="next()" class="btn-wrapped mt-16 reveal-text" style="animation-delay: 4s">CONTINUE</button>
+                <button onclick="next()" class="btn-wrapped mt-16">CONTINUE</button>
             `);
             break;
 
-        case 8: // Receipt
+        case 8: // RECEIPT
             const receiptData = data.receipt;
             content = wrappedWrapper(`
                 <p class="mb-6 text-sm text-gray-400 italic font-mono reveal-text delay-1">${wrapWords("anw, here's the receipt for using my service:", 0)}</p>
                 <div class="receipt-modern receipt-animation text-[11px] border-4 border-white shadow-2xl">
                     <h3 class="text-center font-black text-xl mb-1 uppercase">Friend Service</h3>
                     <div class="receipt-line-neon"></div>
-                    <div class="space-y-2 font-mono uppercase text-white">
+                    <div class="space-y-2 font-mono uppercase text-white text-left">
                         ${data.playlist.map((song, i) => `
                             <div class="flex justify-between items-start gap-2">
-                                <span class="text-left">${(i+1).toString().padStart(2, '0')} ${song.substring(0, 15)}</span>
+                                <span>${(i+1).toString().padStart(2, '0')} ${song.substring(0, 15)}</span>
                                 <span class="text-[#ffff00]">Rp${receiptData.list[i].toLocaleString('id-ID')}</span>
                             </div>
                         `).join('')}
@@ -192,7 +197,7 @@ export function renderSlide(num, data) {
                     <div class="receipt-line-neon"></div>
                     <div class="mt-4 font-bold font-mono text-right space-y-1 text-white">
                         <div class="flex justify-between"><span>SUBTOTAL</span> <span>Rp${receiptData.subtotal.toLocaleString('id-ID')}</span></div>
-                        <div class="flex justify-between text-[#00ff00]"><span>DISCOUNT (BFF)</span> <span>-100%</span></div>
+                        <div class="flex justify-between text-[#00ff00]"><span>DISCOUNT</span> <span>-100%</span></div>
                         <div class="receipt-line-neon"></div>
                         <div class="flex justify-between text-2xl pt-1 font-black text-[#ffff00] text-outline-white">
                             <span>TOTAL</span> <span>FREE</span>
@@ -211,7 +216,7 @@ export function renderSlide(num, data) {
             `);
             break;
 
-        case 10: // Candle
+        case 10: // CANDLE
             content = `
                 <div class="flex flex-col items-center justify-center h-full w-full text-center px-8 animate-fade-in relative z-10">
                     <div class="relative inline-block scale-150"><div id="flame" class="flame mb-2"></div><div class="text-8xl">🎂</div><div id="candle" class="absolute inset-0 cursor-pointer opacity-0"></div></div>
@@ -224,16 +229,15 @@ export function renderSlide(num, data) {
 
     // --- TRIGGER LOGIC SINKRONISASI ---
     setTimeout(() => {
-        const animElements = ["text-anim", "cafe-anim", "antang-anim", "karaoke-anim", "tiktok-anim", "age-anim"];
+        const animElements = ["text-anim", "cafe-anim", "antang-anim", "karaoke-anim", "tiktok-anim", "age-anim", "yearning-anim"];
         animElements.forEach(id => {
             const el = document.getElementById(id);
             if(el) el.style.opacity = "1";
         });
 
-        // Counters
         if (num === 2) animateValue("text-anim", 0, data.stats.textCount, 3000);
-        if (num === 3) animateValue("cafe-anim", 0, data.stats.cafeCount, 2500);
-        if (num === 5) animateValue("karaoke-anim", 0, data.stats.karaokeCount, 2000);
+        if (num === 3) {/* Slide-up logic handled in case 3 */}
+        if (num === 5) animateValue("yearning-anim", 0, "22896", 3000);
         if (num === 6) animateValue("tiktok-anim", 0, data.stats.hours, 1500);
         if (num === 7) animateValue("age-anim", 0, data.age, 1000);
 
@@ -257,44 +261,30 @@ export function renderSlide(num, data) {
             }, 6000);
         }
 
-        // --- NEW: SLIDE 4 LOGIC (TOP 1 TO TOP 5) ---
+        // Slide 4 Transition
         if (num === 4) {
-            // Step 1: Spotlight Kos Eza (2.5 detik)
             setTimeout(() => {
                 if (window.currentSlideNum !== 4) return;
                 const t1 = document.getElementById('top1Container');
                 const t5 = document.getElementById('top5Container');
                 if (t1 && t5) {
-                    t1.style.transform = "translateY(-20vh) scale(0.8)";
-                    t1.classList.add('opacity-50');
-                    t5.classList.remove('opacity-0', 'translate-y-20');
-                    t5.classList.add('opacity-100', 'translate-y-0');
-                    
-                    // Trigger Bar Animation manual after slide up
+                    t1.style.transform = "translateY(-20vh) scale(0.8)"; t1.classList.add('opacity-50');
+                    t5.classList.remove('opacity-0', 'translate-y-20'); t5.classList.add('opacity-100', 'translate-y-0');
                     for(let i=0; i<5; i++) {
                         const bar = document.getElementById(`bar-${i}`);
-                        if(bar) {
-                            setTimeout(() => {
-                                bar.style.transition = "transform 1s ease-out";
-                                bar.style.transform = "translateX(0)";
-                            }, 500 + (i * 200));
-                        }
+                        if(bar) { setTimeout(() => { bar.style.transition = "transform 1s ease-out"; bar.style.transform = "translateX(110%)"; }, 500 + (i * 200)); }
                     }
                 }
-            }, 3500); // Tunggu Chika baca "Kos Eza" dulu
+            }, 3500);
         }
 
+        // Slide 5 Transition
         if (num === 5) {
-            // Setelah menit 22.896 selesai berhitung (3 detik + buffer)
             setTimeout(() => {
                 if (window.currentSlideNum !== 5) return;
                 const yc = document.getElementById('yearningContainer');
                 const dc = document.getElementById('daysContainer');
-                if (yc && dc) {
-                    yc.style.transform = "translateY(-5vh)";
-                    dc.classList.remove('opacity-0', 'translate-y-10');
-                    dc.classList.add('opacity-100', 'translate-y-0');
-                }
+                if (yc && dc) { yc.style.transform = "translateY(-5vh)"; dc.classList.remove('opacity-0', 'translate-y-10'); dc.classList.add('opacity-100', 'translate-y-0'); }
             }, 4500);
         }
     }, 1500);
