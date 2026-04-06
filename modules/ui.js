@@ -4,7 +4,7 @@ function getContrastColor(theme) {
     if (!theme) return "text-white";
     const lowerTheme = theme.toLowerCase();
     // Deteksi jika background adalah Kuning (#D8AD1F) atau Putih
-    if (lowerTheme.includes("#d8ad1f") || lowerTheme.includes("white") || lowerTheme.includes("#ffffff")) {
+    if (lowerTheme.includes("#d8ad1f")) {
         return "text-black";
     }
     return "text-white";
