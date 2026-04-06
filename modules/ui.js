@@ -244,7 +244,7 @@ export function renderSlide(num, data) {
                                 <span class="text-white">▶</span>
                             </div>
                             <div class="flex-1 text-left">
-                                <p class="text-xs font-bold text-white/90">VoiceMessage.mp3</p>
+                                <p class="text-xs font-bold text-white/90">BoysKissingASMR.mp3</p>
                                 <p class="text-[10px] text-white/60 uppercase tracking-tighter">Playing Now...</p>
                             </div>
                         </div>
