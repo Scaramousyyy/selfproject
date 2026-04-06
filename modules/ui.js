@@ -182,7 +182,7 @@ export function renderSlide(num, data) {
                 <div class="flex flex-col bg-white border-4 border-white mb-10 shadow-2xl w-full max-w-sm h-80 overflow-hidden relative">
                     ${rows.map((row) => `
                         <div class="w-full h-1/4 flex justify-start items-center overflow-hidden -ml-1 ${row.bgColor}">
-                            ${wrapRow("22,896", row.delay, `text-[6.2rem] font-black ${row.textColor} tracking-tighter leading-[0.8] w-full text-left uppercase`)}
+                            ${wrapRow("22,896", row.delay, `text-[5.5rem] font-black ${row.textColor} tracking-tighter leading-[0.8] w-full text-left uppercase`)}
                         </div>
                     `).join('')}
                 </div>
@@ -203,7 +203,7 @@ export function renderSlide(num, data) {
         case 11:
             const r = data.receipt;
             content = wrapper(`
-                ${wrapRow("since u keep using my service, i guess... here's the receipt:", 1.5, `font-bold text-2xl ${baseTextColor}`)}
+                ${wrapRow("since u keep using my service, i guess... here's the receipt:", 1.5, `font-bold text-xl ${baseTextColor}`)}
                 <div id="receipt-box" class="bg-white text-black p-6 w-full max-w-[320px] shadow-2xl mt-8 mx-auto overflow-hidden opacity-0 border-2 border-gray-200"
                      style="transform: scaleY(0); transform-origin: top; transition: transform 1.5s cubic-bezier(0.1, 0.5, 0.5, 1), opacity 0.5s ease;">
                     <div class="font-mono text-[10px] text-left uppercase tracking-tight">
